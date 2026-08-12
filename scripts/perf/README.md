@@ -26,7 +26,7 @@ The fixture is local and contains ordinary benign text, inline thumbnails, and
 inert links under the reserved `.invalid` TLD. This exercises media discovery
 and batched host checks without depending on the network or third-party page
 changes. Each variant gets a fresh profile and the Firefox extension is staged
-from the same runtime files as `build-firefox.ps1`.
+from the same runtime files as the cross-platform extension builder.
 
 Use `--extension-source PATH` to compare another checkout or an archived Git
 revision against the working tree.

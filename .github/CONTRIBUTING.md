@@ -14,9 +14,8 @@ Thanks for helping improve BlockNSFW.
 This project is intentionally lightweight:
 
 - Vanilla JavaScript / HTML
-- No Node build step required
-- Chrome build script: `build-chrome.ps1`
-- Firefox build script: `build-firefox.ps1`
+- Node.js 18+ for cross-platform build and test tooling
+- Vanilla JavaScript / HTML extension runtime with no transpilation step
 
 ### Local run
 
@@ -28,23 +27,25 @@ Chromium browsers:
 
 Firefox:
 
-1. Run `build-firefox.ps1`
+1. Run `npm run build:firefox`
 2. Open `about:debugging#/runtime/this-firefox`
-3. Load `dist\firefox\manifest.json`
+3. Load `dist/firefox/manifest.json`
 
 ## Build Commands
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build-chrome.ps1
-powershell -ExecutionPolicy Bypass -File .\build-firefox.ps1
+```bash
+npm ci
+npm run build
 ```
 
 Optional zip output:
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build-chrome.ps1 -Zip
-powershell -ExecutionPolicy Bypass -File .\build-firefox.ps1 -Zip
+```bash
+npm run build:zip
 ```
+
+The existing `build-chrome.ps1` and `build-firefox.ps1` commands remain as
+PowerShell compatibility wrappers around the Node builder.
 
 ## Pull Request Guidelines
 

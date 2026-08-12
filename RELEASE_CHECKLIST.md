@@ -19,27 +19,21 @@ Use this before publishing Chrome Web Store or Firefox Add-ons update.
 
 ## 2. Build
 
-Always build with `-Zip`. The zip is the artifact the stores actually receive,
-and the plain build only refreshes `dist\chrome\` and `dist\firefox\` — it
+Always run the zip build. The zip is the artifact the stores actually receive,
+and the plain build only refreshes `dist/chrome/` and `dist/firefox/` — it
 leaves any existing zip untouched. Uploading a stale zip is how a release goes
 out with the previous version number (AMO rejects it with "Version X already
 exists", which reads like the bump failed when it did not).
 
-- [ ] Run `powershell -ExecutionPolicy Bypass -File .\build-chrome.ps1 -Zip`
-- [ ] Run `powershell -ExecutionPolicy Bypass -File .\build-firefox.ps1 -Zip`
-- [ ] Confirm `dist\chrome\manifest.json` exists
-- [ ] Confirm `dist\firefox\manifest.json` exists
+- [ ] Run `npm ci`
+- [ ] Run `npm run build:zip`
+- [ ] Confirm `dist/chrome/manifest.json` exists
+- [ ] Confirm `dist/firefox/manifest.json` exists
 - [ ] **Verify the version inside each zip, not the folder** — the folder can be
       current while the zip is old:
 
-```powershell
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-foreach ($z in @('blocknsfw-chrome.zip','blocknsfw-firefox.zip')) {
-  $a = [System.IO.Compression.ZipFile]::OpenRead((Join-Path (Get-Location) "dist\$z"))
-  $r = New-Object System.IO.StreamReader(($a.Entries | Where-Object { $_.FullName -eq 'manifest.json' }).Open())
-  Write-Output "$z -> $(($r.ReadToEnd() | ConvertFrom-Json).version)"
-  $r.Close(); $a.Dispose()
-}
+```bash
+npm run validate:build
 ```
 
 - [ ] Run `npm test` — all green
@@ -94,7 +88,7 @@ protected when they are not — check by hand every release.
 
 ## 6. Firefox Add-ons Notes
 
-- Uses `manifest.firefox.json` copied to `dist\firefox\manifest.json`
+- Uses `manifest.firefox.json` copied to `dist/firefox/manifest.json`
 - Uses `background.scripts`
 - Uses `declarativeNetRequest`
 - Confirm final Gecko ID before AMO release

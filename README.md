@@ -58,13 +58,14 @@ Main files:
 - `data/WHITELIST.txt` - curated global whitelist
 - `data/SOURCE_NOTES.txt` - data-file provenance, curation policy, missed-site flow
 - `blocklist.json` - bundled fallback blocklist (regenerated from `data/HOSTS.txt`)
-- `build-chrome.ps1` / `build-firefox.ps1` - release bundle scripts
+- `scripts/build-extension.mjs` - cross-platform release bundle builder
+- `build-chrome.ps1` / `build-firefox.ps1` - PowerShell compatibility wrappers
 
 Tech stack:
 
 - Manifest V3
 - Vanilla JavaScript / HTML
-- No Node build step required
+- Node.js 18+ build and test tooling (the shipped extension remains vanilla JavaScript / HTML)
 
 Additional maintainer docs:
 
@@ -108,28 +109,34 @@ More detail: `BROWSER_COMPATIBILITY.md`
 
 1. Open `about:debugging#/runtime/this-firefox`.
 2. Click **Load Temporary Add-on...**
-3. Select `dist\firefox\manifest.json` after running Firefox build script.
+3. Select `dist/firefox/manifest.json` after running the Firefox build.
 
 ## Build Release Bundles
 
-Chrome:
+Install dependencies once with `npm ci`, then use the same commands on Linux,
+macOS, and Windows:
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build-chrome.ps1
-powershell -ExecutionPolicy Bypass -File .\build-chrome.ps1 -Zip
-```
-
-Firefox:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build-firefox.ps1
-powershell -ExecutionPolicy Bypass -File .\build-firefox.ps1 -Zip
+```bash
+npm run build          # Chrome and Firefox folders
+npm run build:chrome   # Chrome folder only
+npm run build:firefox  # Firefox folder only
+npm run build:zip      # Both folders and store-ready zip files
 ```
 
 Build output:
 
-- `dist\chrome\`
-- `dist\firefox\`
+- `dist/chrome/`
+- `dist/firefox/`
+- `dist/blocknsfw-chrome.zip`
+- `dist/blocknsfw-firefox.zip`
+
+The existing PowerShell entry points remain available as compatibility wrappers
+and delegate to the Node builder:
+
+```powershell
+./build-chrome.ps1 -Zip
+./build-firefox.ps1 -Zip
+```
 
 ## Manual Smoke Test
 

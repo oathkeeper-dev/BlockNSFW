@@ -26,8 +26,8 @@ BlockNSFW ships as Manifest V3 extension for Chromium browsers and Firefox.
 
 - `manifest.json` - Chrome / Chromium build
 - `manifest.firefox.json` - Firefox build
-- `build-chrome.ps1` - packages `dist\chrome\`
-- `build-firefox.ps1` - packages `dist\firefox\`
+- `scripts/build-extension.mjs` - packages both browser targets cross-platform
+- `build-chrome.ps1` / `build-firefox.ps1` - PowerShell compatibility wrappers
 
 Firefox is not separate MV2 port. It uses dedicated MV3 manifest plus same runtime files.
 
@@ -41,18 +41,13 @@ Firefox is not separate MV2 port. It uses dedicated MV3 manifest plus same runti
 
 ## Build Commands
 
-Chrome:
+The Node.js 18+ build commands work on Linux, macOS, and Windows:
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build-chrome.ps1
-powershell -ExecutionPolicy Bypass -File .\build-chrome.ps1 -Zip
-```
-
-Firefox:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build-firefox.ps1
-powershell -ExecutionPolicy Bypass -File .\build-firefox.ps1 -Zip
+```bash
+npm run build
+npm run build:chrome
+npm run build:firefox
+npm run build:zip
 ```
 
 ## Firefox Notes
@@ -75,8 +70,8 @@ powershell -ExecutionPolicy Bypass -File .\build-firefox.ps1 -Zip
 
 ### Firefox
 
-- [ ] Build with `build-firefox.ps1`
-- [ ] Load `dist\firefox\manifest.json` as temporary add-on
+- [ ] Build with `npm run build:firefox`
+- [ ] Load `dist/firefox/manifest.json` as temporary add-on
 - [ ] Background script starts without validation errors
 - [ ] Popup opens
 - [ ] Options page opens via UI and `runtime.openOptionsPage`
